@@ -1,0 +1,113 @@
+-- Retrieve all book in the "fiction" gener.
+select * 
+from books
+where genre = "fiction";
+
+-- Find books publish after the year 1950.
+select book_id,genre
+from books
+where published_Year > 1950;
+
+-- List all customers from the canada.
+select *
+from customers
+where country = "canada";
+
+-- show orders placed in november 2023.
+SELECT *
+FROM orders
+WHERE order_date BETWEEN '2023-11-01' AND '2023-11-30';
+
+select *
+from orders
+where order_date >= "2023-11-01" and Order_Date <'2023-12-01';
+
+-- Retrive the total stock of the books available.
+select sum(stock) as Total_stock
+from books
+
+-- find all the details most expensive book.
+
+select *
+from books
+where price = (select max(price) from books);
+
+select * 
+from books
+order by price desc
+limit 1;
+
+-- show all customers who orderd more then 1 quality of book.
+select *
+from orders
+where quantity >1;
+
+-- Retrieve all the orders where the total amount exceeds $20.
+select *
+from orders
+where total_amount > 20;
+
+-- list all genre available in the book table.
+select distinct genre
+from books
+where stock > 0;
+
+-- find the book with lowest stock.
+select *
+from books
+order by stock asc
+limit 5;
+
+-- calculate the total revenue generated from all orders.
+select sum(total_amount) as revenue
+from orders;
+
+-- Retrieve the total number of book sold for each genre.
+SELECT b.genre, SUM(o.quantity) AS total_books_sold
+FROM Books b
+JOIN Orders o
+  ON b.book_id = o.book_id
+GROUP BY b.genre;
+
+-- find the average price of books in " fantasy" genre.
+select genre , avg(price) as average_price
+from books
+where genre = "fantasy";
+
+-- list customers who have placed at least 2 orders.
+SELECT c.name, COUNT(o.order_id) AS total_orders
+FROM Customers c
+JOIN Orders o
+  ON c.customer_id = o.customer_id
+GROUP BY c.name
+HAVING COUNT(o.order_id) = 2;
+
+-- find most frequently ordered book.
+SELECT b.title, SUM(o.quantity) AS total_sold
+FROM Books b
+JOIN Orders o
+  ON b.book_id = o.book_id
+GROUP BY b.title
+ORDER BY total_sold DESC
+LIMIT 1;
+
+-- show the top 3 most expensive book of "fantasy" genre.
+SELECT *
+FROM Books
+WHERE genre = 'Fantasy'
+ORDER BY price DESC
+LIMIT 3;
+
+-- Retrieve the total quqntity of book sold by each author.
+SELECT b.author, SUM(o.quantity) AS total_books_sold
+FROM Books b
+JOIN Orders o
+  ON b.book_id = o.book_id
+GROUP BY b.author;
+
+-- list the cities where customers who spend over $30 are located.
+select distinct c.city,total_amount
+from orders o
+join customers c
+on o.customer_id= c.Customer_ID
+where o.Total_Amount>30;
